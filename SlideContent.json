@@ -1,0 +1,58 @@
+{
+    "Carlos Pereira": {
+        "nome do paciente": "Carlos Pereira",
+        "idade": 68,
+        "sexo": "Masculino",
+        "etnia": "Pardo",
+        "procedente": "Sao Paulo",
+        "data de nascimento": "15/03/1955",
+        "prontuario": "9876543",
+        "prec cp": "Cardiologia",
+        "contato": "(11) 98888-7777",
+        "posto e graduacao": "Major da Reserva",
+        "queixa principal": "Dor de cabeca frequente e tontura",
+        "hda": "Paciente relata episodios de cefaleia tensional ha 3 meses, associados a estresse laboral e ma qualidade do sono.",
+        "retorno1": {
+            "data": "15/09/2023",
+            "info": "Paciente retornou com melhora parcial das cefaleias apos inicio de terapia com analgésicos e medidas de higiene do sono. Relata ainda episodios de tontura ao se levantar rapidamente."
+        },
+        "retorno2": {
+            "data": "15/09/2023",
+            "info": "Paciente retornou com melhora parcial das cefaleias apos inicio de terapia com analgésicos e medidas de higiene do sono. Relata ainda episodios de tontura ao se levantar rapidamente."
+        },
+        "retorno3": {
+            "data": "15/09/2023",
+            "info": "Paciente retornou com melhora parcial das cefaleias apos inicio de terapia com analgésicos e medidas de higiene do sono. Relata ainda episodios de tontura ao se levantar rapidamente."
+        },
+        "antecedentes pessoais": {
+            "alergias": ["Amoxicilina", "Dipirona"],
+            "comorbidades": ["Hipertensao arterial sistemica", "diabetes tipo 2"],
+            "habitos e vicios": ["Ex tabagista 1 maço por dia", "Alcoolista", "Diabético"],
+            "cirurgias previas": "Colecistectomia aos 55 anos",
+            "medicamentos em uso continuo": ["Losartana 50mg/dia", "Metformina 850mg 2x/dia"]
+        },
+        "exame fisico geral": {
+            "peso": 78,
+            "altura": 1.72,
+            "info 1": "PA: 140/85 mmHg, FC: 78 bpm",
+            "info 2": "Sem alteracoes visiveis em pele ou mucosas"
+        },
+        "exame neurologico": {
+            "info1": "Orientado no tempo e espaco, memoria preservada",
+            "info2": "Reflexos normais, sem deficit motor",
+            "info3": "Sensibilidade preservada, sem sinais meningeos"
+        },
+        "exames complementares": [
+            {
+                "tipo": "Hemograma completo",
+                "data": "01/08/2023",
+                "laudo": "Sem alteracoes relevantes, hemoglobina e leucocitos dentro dos limites normais"
+            },
+            {
+                "tipo": "Tomografia de cranio",
+                "data": "05/08/2023",
+                "laudo": "Estruturas encefalicas sem lesoes, ventriculos normais, ausencia de hemorragias"
+            }
+        ]
+    }
+}

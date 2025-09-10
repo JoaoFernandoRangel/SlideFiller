@@ -1,0 +1,53 @@
+{
+    "nome do paciente": {
+        "nome do paciente": "",
+        "idade": "",
+        "sexo": "",
+        "etnia": "",
+        "procedente": "",
+        "data de nascimento": "",
+        "prontuario": "",
+        "prec cp": "",
+        "contato": "",
+        "posto e graduacao": "",
+        "queixa principal": "",
+        "hda": "",
+        "retorno1": {
+            "data": "",
+            "info": ""
+        },
+        "retorno2": {
+            "data": "",
+            "info": ""
+        },
+        "retorno3": {
+            "data": "",
+            "info": ""
+        },
+        "antecedentes pessoais": {
+            "alergias": [],
+            "comorbidades": [],
+            "habitos e vicios": [],
+            "cirurgias previas": "",
+            "medicamentos em uso continuo": []
+        },
+        "exame fisico geral": {
+            "peso": "",
+            "altura": "",
+            "info 1": "",
+            "info 2": ""
+        },
+        "exame neurologico": {
+            "info1": "",
+            "info2": "",
+            "info3": ""
+        },
+        "exames complementares": [
+            {
+                "tipo": "",
+                "data": "",
+                "laudo": ""
+            }
+        ]
+    }
+}
