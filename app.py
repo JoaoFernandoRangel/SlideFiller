@@ -1,5 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
 import requests
 import json
 import os
@@ -7,9 +9,11 @@ import time
 
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
+GOOGLE_URL = os.getenv("GOOGLE_URL_ENDPOINT")
 if not API_KEY:
     st.error("⚠️ GEMINI_API_KEY não encontrada. Verifique o arquivo .env")
     st.stop()
+
 
 # Template do JSON
 JSON_TEMPLATE = {
@@ -104,6 +108,10 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# Inicializa se não existir
+if "json_to_send" not in st.session_state:
+    st.session_state["json_to_send"] = {}
+
 # Botão para chamada de Gemini
 if st.button("Converter", key="btn_converter"):
     if not st.session_state.get("historia", "").strip():
@@ -115,13 +123,35 @@ if st.button("Converter", key="btn_converter"):
                 st.session_state["json_editavel"] = json.dumps(
                     resultado, indent=2, ensure_ascii=False
                 )
+                st.session_state["json_to_send"] = resultado  # salva aqui
             else:
                 st.error("Não foi possível obter dados estruturados do Gemini.")
 
-# Botão Generate Slide
-if st.button("Gerar Slide (em breve)"):
-    st.success("🚧 Em breve: integração com Google Slides")
-    st.code(st.session_state.get("json_editavel", ""), language="json")
+# Botão para gerar slide
+if st.button("Gerar Slide"):
+    st.info("Enviando JSON para o Apps Script...")
+
+    url = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
+
+    jsonToSend = st.session_state.get("json_to_send", {})
+
+    if not jsonToSend:
+        st.warning(
+            "Nenhum JSON disponível para enviar. Primeiro clique em 'Converter'."
+        )
+    else:
+        try:
+            print(
+                "Enviando para o Apps Script:",
+                json.dumps(jsonToSend, indent=2, ensure_ascii=False),
+            )
+            response = requests.post(url, json=jsonToSend, timeout=10)
+            response.raise_for_status()
+            st.success("JSON enviado com sucesso!")
+            st.json(response.json())
+        except Exception as e:
+            st.error(f"Erro ao enviar JSON: {e}")
+
 
 col_left, col_right = st.columns([6, 6])
 
