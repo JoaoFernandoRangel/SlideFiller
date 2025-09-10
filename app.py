@@ -102,6 +102,7 @@ st.markdown(
     div.stButton > button:first-child {
         width: 700px;  /* ajuste para a largura desejada */
         height: 50px;  /* opcional: altura maior */
+        
     }
     </style>
     """,
