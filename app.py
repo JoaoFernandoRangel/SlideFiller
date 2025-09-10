@@ -40,7 +40,7 @@ JSON_TEMPLATE = {
             "cirurgias previas": "",
             "medicamentos em uso continuo": [],
         },
-        "exame fisico geral": {"peso": "", "altura": "", "info 1": "", "info 2": ""},
+        "exame fisico geral": {"peso": "", "altura": "", "info1": "", "info2": ""},
         "exame neurologico": {"info1": "", "info2": "", "info3": ""},
         "exames complementares": [{"tipo": "", "data": "", "laudo": ""}],
     }
@@ -59,7 +59,8 @@ Texto:
 JSON base:
 {json.dumps(JSON_TEMPLATE, indent=2, ensure_ascii=False)}
 
-Responda SOMENTE com o JSON preenchido. Valores de peso e altura devem vir em quilograma e metros.
+Responda SOMENTE com o JSON preenchido. Valores de peso e altura devem vir em quilograma e metros. 
+Na seção de antecedentes pessoais os campos não listados devem ser completados com a palavra "nega".
 """
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -108,13 +109,16 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+st.header(
+    "Slides no Google Drive: [Abrir pasta](https://drive.google.com/drive/u/0/folders/1Z0CKEqwS80c9BFODVcsm9cYrZmK4ol5M)"
+)
 
 # Inicializa se não existir
 if "json_to_send" not in st.session_state:
     st.session_state["json_to_send"] = {}
 
 # Botão para chamada de Gemini
-if st.button("Converter", key="btn_converter"):
+if st.button("Processar dados para geração de slides", key="btn_converter"):
     if not st.session_state.get("historia", "").strip():
         st.warning("Cole a história antes de converter.")
     else:
@@ -148,33 +152,33 @@ if st.button("Gerar Slide"):
             )
             response = requests.post(url, json=jsonToSend, timeout=10)
             response.raise_for_status()
-            st.success("JSON enviado com sucesso!")
-            st.json(response.json())
+            st.success("JSON enviado com sucesso! Seu slide está na pasta Automações.")
+            print(json.dumps(response.json(), indent=2, ensure_ascii=False))
         except Exception as e:
             st.error(f"Erro ao enviar JSON: {e}")
 
 
-col_left, col_right = st.columns([6, 6])
+# col_left, col_right = st.columns([6, 6])
+# # with col_left:
 
 # --- coluna esquerda: história clínica (editable) ---
-with col_left:
-    st.subheader("História Clínica")
-    historia = st.text_area(
-        "História clinica do paciente, em texto livre",
-        placeholder="Cole a história clínica aqui...",
-        height=400,
-        key="historia",  # mantém o valor em session_state
-    )
+st.subheader("História Clínica")
+historia = st.text_area(
+    "Cole abaixo a história do paciente.",
+    placeholder="Cole a história clínica aqui...",
+    height=400,
+    key="historia",  # mantém o valor em session_state
+)
 
 
-# --- coluna direita: JSON (inicia com template; depois mostra o resultado) ---
-with col_right:
-    st.subheader("Dado estruturado")
+# # --- coluna direita: JSON (inicia com template; depois mostra o resultado) ---
+# with col_right:
+#     st.subheader("Dado estruturado")
 
-    # key = "json_editavel" permite que a área preserve edições do usuário
-    json_editado = st.text_area(
-        "Informações detalhadas sobre o paciente (JSON)",
-        height=400,
-        key="json_editavel",
-        placeholder=json.dumps(JSON_TEMPLATE, indent=2, ensure_ascii=False),
-    )
+#     # key = "json_editavel" permite que a área preserve edições do usuário
+#     json_editado = st.text_area(
+#         "Informações detalhadas sobre o paciente (JSON)",
+#         height=400,
+#         key="json_editavel",
+#         placeholder=json.dumps(JSON_TEMPLATE, indent=2, ensure_ascii=False),
+#     )
