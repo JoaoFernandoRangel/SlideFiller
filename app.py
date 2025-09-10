@@ -117,45 +117,40 @@ st.header(
 if "json_to_send" not in st.session_state:
     st.session_state["json_to_send"] = {}
 
-# Botão para chamada de Gemini
-if st.button("Processar dados para geração de slides", key="btn_converter"):
+# Botão único para processar e gerar slide
+if st.button("Gerar Slide", key="btn_gerar_slide"):
     if not st.session_state.get("historia", "").strip():
-        st.warning("Cole a história antes de converter.")
+        st.warning("Cole a história antes de gerar os slides.")
     else:
-        with st.spinner("🔎 Extraindo informações com Gemini..."):
-            resultado = chamar_gemini(st.session_state["historia"])
-            if resultado:
-                st.session_state["json_editavel"] = json.dumps(
-                    resultado, indent=2, ensure_ascii=False
-                )
-                st.session_state["json_to_send"] = resultado  # salva aqui
-            else:
-                st.error("Não foi possível obter dados estruturados do Gemini.")
+        with st.spinner("🔎 Processando dados e gerando slide..."):
+            try:
+                # Passo 1: processar com Gemini
+                resultado = chamar_gemini(st.session_state["historia"])
+                if not resultado:
+                    st.error("Não foi possível obter dados estruturados do Gemini.")
+                else:
+                    # Salva estados
+                    st.session_state["json_editavel"] = json.dumps(
+                        resultado, indent=2, ensure_ascii=False
+                    )
+                    st.session_state["json_to_send"] = resultado
 
-# Botão para gerar slide
-if st.button("Gerar Slide"):
-    st.info("Enviando JSON para o Apps Script...")
+                    # Passo 2: enviar para o Apps Script
+                    url = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
 
-    url = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
+                    print(
+                        "Enviando para o Apps Script:",
+                        json.dumps(resultado, indent=2, ensure_ascii=False),
+                    )
 
-    jsonToSend = st.session_state.get("json_to_send", {})
+                    response = requests.post(url, json=resultado, timeout=10)
+                    response.raise_for_status()
 
-    if not jsonToSend:
-        st.warning(
-            "Nenhum JSON disponível para enviar. Primeiro clique em 'Converter'."
-        )
-    else:
-        try:
-            print(
-                "Enviando para o Apps Script:",
-                json.dumps(jsonToSend, indent=2, ensure_ascii=False),
-            )
-            response = requests.post(url, json=jsonToSend, timeout=10)
-            response.raise_for_status()
-            st.success("JSON enviado com sucesso! Seu slide está na pasta Automações.")
-            print(json.dumps(response.json(), indent=2, ensure_ascii=False))
-        except Exception as e:
-            st.error(f"Erro ao enviar JSON: {e}")
+                    st.success("✅ Slide gerado com sucesso! Verifique a pasta Automações.")
+                    print(json.dumps(response.json(), indent=2, ensure_ascii=False))
+
+            except Exception as e:
+                st.error(f"Erro durante o processamento/envio: {e}")
 
 
 # col_left, col_right = st.columns([6, 6])
