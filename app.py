@@ -5,7 +5,8 @@ import time
 
 
 
-API_KEY = st.secrets["API_KEY"]
+MAIN_API_KEY = st.secrets["API_KEY"]
+RESERVE_API_KEY = st.secrets["RESERVE_API_KEY"]
 GOOGLE_URL = st.secrets["GOOGLE_URL"]
 FOLDER_URL = st.secrets["FOLDER_URL"]
 
@@ -57,7 +58,7 @@ JSON base:
 Responda SOMENTE com o JSON preenchido. Valores de peso e altura devem vir em quilograma e metros. 
 Na seção de antecedentes pessoais os campos não listados devem ser completados com a palavra "nega".
 """
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={RESERVE_API_KEY}"
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
     headers = {"Content-Type": "application/json"}
 
