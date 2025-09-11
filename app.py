@@ -10,6 +10,8 @@ import time
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
 GOOGLE_URL = os.getenv("GOOGLE_URL_ENDPOINT")
+FOLDER_URL = os.getenv("FOLDER_URL")
+
 if not API_KEY:
     st.error("⚠️ GEMINI_API_KEY não encontrada. Verifique o arquivo .env")
     st.stop()
@@ -110,7 +112,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.header(
-    "Slides no Google Drive: [Abrir pasta](https://drive.google.com/drive/u/0/folders/1Z0CKEqwS80c9BFODVcsm9cYrZmK4ol5M)"
+    f"Slides no Google Drive: [Abrir pasta]({FOLDER_URL})"
 )
 
 # Inicializa se não existir
@@ -136,12 +138,13 @@ if st.button("Gerar Slide", key="btn_gerar_slide"):
                     st.session_state["json_to_send"] = resultado
 
                     # Passo 2: enviar para o Apps Script
-                    url = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
+                    url = GOOGLE_URL
+                    print(url)
 
-                    print(
-                        "Enviando para o Apps Script:",
-                        json.dumps(resultado, indent=2, ensure_ascii=False),
-                    )
+                    # print(
+                    #     "Enviando para o Apps Script:",
+                    #     json.dumps(resultado, indent=2, ensure_ascii=False),
+                    # )
 
                     response = requests.post(url, json=resultado, timeout=10)
                     response.raise_for_status()
