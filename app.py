@@ -48,15 +48,15 @@ def chamar_gemini(historia: str, tentativas=3) -> dict:
 Você é um extrator de informações.
 Receba o seguinte texto de paciente e preencha o JSON fornecido.
 Se a informação não estiver no texto, mantenha o campo vazio. Não faça nenhuma suposição nem remova nenhuma informação.
-
+Valores de peso e altura devem vir em quilograma e metros. Pode inferir o sexo a partir do nome.
+Na seção de antecedentes pessoais os campos não listados devem ser completados com a palavra "Nega".
 Texto:
 {historia}
 
 JSON base:
 {json.dumps(JSON_TEMPLATE, indent=2, ensure_ascii=False)}
 
-Responda SOMENTE com o JSON preenchido. Valores de peso e altura devem vir em quilograma e metros. 
-Na seção de antecedentes pessoais os campos não listados devem ser completados com a palavra "nega".
+Responda SOMENTE com o JSON preenchido. 
 """
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={RESERVE_API_KEY}"
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
