@@ -6,9 +6,10 @@ import json
 import time
 
 
-API_KEY = "AIzaSyB1BA-t7-L5XPuPqw3-LyY5fukjUH0M0yM"
-GOOGLE_URL = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
-FOLDER_URL = "https://drive.google.com/drive/u/0/folders/1Z0CKEqwS80c9BFODVcsm9cYrZmK4ol5M"
+
+API_KEY = st.secrets["API_KEY"]
+GOOGLE_URL = st.secrets["GOOGLE_URL"]
+FOLDER_URL = st.secrets["FOLDER_URL"]
 
 
 # Template do JSON
