@@ -1,13 +1,11 @@
 import streamlit as st
-from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 import requests
 import json
-import os
 import time
 
-load_dotenv()
+
 API_KEY = "AIzaSyB1BA-t7-L5XPuPqw3-LyY5fukjUH0M0yM"
 GOOGLE_URL = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
 FOLDER_URL = "https://drive.google.com/drive/u/0/folders/1Z0CKEqwS80c9BFODVcsm9cYrZmK4ol5M"
