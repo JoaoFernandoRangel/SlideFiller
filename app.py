@@ -3,10 +3,9 @@ import requests
 import json
 import time
 
-
-
 MAIN_API_KEY = st.secrets["API_KEY"]
 RESERVE_API_KEY = st.secrets["RESERVE_API_KEY"]
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 GOOGLE_URL = st.secrets["GOOGLE_URL"]
 FOLDER_URL = st.secrets["FOLDER_URL"]
 
