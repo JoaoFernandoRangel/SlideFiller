@@ -8,13 +8,9 @@ import os
 import time
 
 load_dotenv()
-API_KEY = os.getenv("GEMINI_API_KEY")
-GOOGLE_URL = os.getenv("GOOGLE_URL_ENDPOINT")
-FOLDER_URL = os.getenv("FOLDER_URL")
-
-if not API_KEY:
-    st.error("⚠️ GEMINI_API_KEY não encontrada. Verifique o arquivo .env")
-    st.stop()
+API_KEY = "AIzaSyB1BA-t7-L5XPuPqw3-LyY5fukjUH0M0yM"
+GOOGLE_URL = "https://script.google.com/macros/s/AKfycbxXNgiEuXcCh962TMSMl72fCfNE0mxnLQvz_aYuMPelgCun1sfFT8-wZXSeYtAqGasmaQ/exec"
+FOLDER_URL = "https://drive.google.com/drive/u/0/folders/1Z0CKEqwS80c9BFODVcsm9cYrZmK4ol5M"
 
 
 # Template do JSON
