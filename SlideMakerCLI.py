@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GOOGLE_URL = os.getenv("GOOGLE_URL_ENDPOINT")
 
 # Template do JSON
 JSON_TEMPLATE = {
@@ -39,6 +40,7 @@ JSON_TEMPLATE = {
 }
 
 def chamar_gemini(historia: str, tentativas=3) -> dict:
+    """Envia o texto ao Gemini e retorna JSON estruturado"""
     prompt = f"""
 Você é um extrator de informações.
 Receba o seguinte texto de paciente e preencha o JSON fornecido.
@@ -67,7 +69,7 @@ Responda SOMENTE com o JSON preenchido.
                 time.sleep(3)
                 continue
             else:
-                print("❌ Erro na API Gemini")
+                print("❌ Erro na API Gemini:")
                 print(json.dumps(data, indent=2, ensure_ascii=False))
                 return {}
 
@@ -84,12 +86,32 @@ Responda SOMENTE com o JSON preenchido.
     return {}
 
 
-def get_multiple_stories():
-    with open("historias.txt", "r", encoding="utf-8") as file:
+def processar_historias(arquivo="historias.txt"):
+    """Lê o arquivo, processa cada história e gera slides via Apps Script"""
+    with open(arquivo, "r", encoding="utf-8") as file:
         historias = file.read().split("----")
-    for historia in historias:
+
+    for idx, historia in enumerate(historias, start=1):
         historia = historia.strip()
         if not historia:
             continue
+
+        print(f"\n=== Processando história {idx} ===")
         resultado = chamar_gemini(historia)
-        print(json.dumps(resultado, indent=2, ensure_ascii=False))
+
+        if not resultado:
+            print("⚠️ Não foi possível obter dados estruturados.")
+            continue
+
+        # Enviar para Google Apps Script
+        try:
+            response = requests.post(GOOGLE_URL, json=resultado, timeout=10)
+            response.raise_for_status()
+            print("✅ Slide gerado com sucesso!")
+            print(json.dumps(response.json(), indent=2, ensure_ascii=False))
+        except Exception as e:
+            print(f"❌ Erro ao enviar para Apps Script: {e}")
+
+
+if __name__ == "__main__":
+    processar_historias()
