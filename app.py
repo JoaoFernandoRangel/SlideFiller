@@ -55,11 +55,10 @@ Instruções:
 2. Não faça suposições nem remova informações.  
 3. Peso em quilogramas, altura em metros.  
 4. Pode inferir sexo pelo nome.  
-5. Em "antecedentes pessoais", campos não citados → preencher com "Nega".  
-
+5. Em "antecedentes pessoais", campos não citados → preencher com "Nega".
+6. Se encontrar a sigla PO, ela quer dizer Pós Operatório, o nome ao lado deve ser listado em cirurgias.
 Texto do paciente:  
 {historia}  
-
 JSON base:  
 {json.dumps(JSON_TEMPLATE, indent=2, ensure_ascii=False)}  
 
