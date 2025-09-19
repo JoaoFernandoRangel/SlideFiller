@@ -3,6 +3,7 @@ import json
 import time
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -39,14 +40,15 @@ JSON_TEMPLATE = {
     }
 }
 
+
 def chamar_gemini(historia: str, tentativas=3) -> dict:
     """Envia o texto ao Gemini e retorna JSON estruturado"""
     prompt = f"""
 Você é um extrator de informações.
 Receba o seguinte texto de paciente e preencha o JSON fornecido.
 Se a informação não estiver no texto, mantenha o campo vazio. Não faça nenhuma suposição nem remova nenhuma informação.
-Valores de peso e altura devem vir em quilograma e metros. Pode inferir o sexo a partir do nome.
-Na seção de antecedentes pessoais os campos não listados devem ser completados com a palavra "Nega".
+Valores de peso e altura devem vir em quilograma e metros, me de em números para poder processar depois sem problemas. Pode inferir o sexo a partir do nome.
+Na seção de antecedentes pessoais os campos não listados devem ser completados com a palavra "Nega". Corrija as letras maiusculas.
 Texto:
 {historia}
 
@@ -65,7 +67,9 @@ Responda SOMENTE com o JSON preenchido.
 
         if "error" in data:
             if data["error"].get("code") == 503:
-                print(f"⚠️ Gemini sobrecarregado. Tentando novamente ({tentativa}/{tentativas})...")
+                print(
+                    f"⚠️ Gemini sobrecarregado. Tentando novamente ({tentativa}/{tentativas})..."
+                )
                 time.sleep(3)
                 continue
             else:
