@@ -57,6 +57,8 @@ Instruções:
 4. Pode inferir sexo pelo nome.  
 5. Em "antecedentes pessoais", campos não citados → preencher com "Nega".
 6. Se encontrar a sigla PO, ela quer dizer Pós Operatório, o nome ao lado deve ser listado em cirurgias.
+7. Corrija as letras maiúsculas dos textos. Formate-os corretamente.
+8. Responda apenas com o JSON, sem explicações.
 Texto do paciente:  
 {historia}  
 JSON base:  
