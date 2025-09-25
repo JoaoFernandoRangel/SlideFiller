@@ -174,7 +174,7 @@ st.markdown(
 st.header(f"Slides no Google Drive: [Abrir pasta]({FOLDER_URL})")
 
 st.checkbox(
-    "Sua história é um questionário?",
+    "Sua história é um questionário?---",
     value=False,
     key="is_questionario",
     # on_change=printValueOnTerminal(st.session_state["is_questionario"]),
