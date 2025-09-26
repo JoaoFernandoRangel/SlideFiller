@@ -53,7 +53,7 @@ Sua tarefa é preencher o JSON fornecido com base no texto do paciente.
 Instruções:  
 1. Se a informação não estiver no texto → deixe vazio.  
 2. Não faça suposições nem remova informações.  
-3. Peso em quilogramas, altura em metros.  
+3. Peso em quilogramas, altura em metros. Retorne somente os números, eles serão usados para cálculos, não adicione as unidades.  
 4. Pode inferir sexo pelo nome.  
 5. Em "antecedentes pessoais", campos não citados → preencher com "Nega".
 6. Se encontrar a sigla PO, ela quer dizer Pós Operatório, o nome ao lado deve ser listado em cirurgias.
