@@ -235,7 +235,7 @@ st.checkbox("Sua história é um questionário?", value=False, key="is_questiona
 if "json_to_send" not in st.session_state:
     st.session_state["json_to_send"] = {}
 
-st.subheader(f"Esse site usa o modelo: {modelo_IA}")
+st.text(f"Esse site usa o modelo: {modelo_IA}")
 
 st.subheader("História Clínica")
 historia = st.text_area(
