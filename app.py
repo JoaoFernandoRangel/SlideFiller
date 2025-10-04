@@ -7,6 +7,10 @@ from openai import OpenAI
 
 # ---------------- CONFIGURAÇÕES ---------------- #
 USE_GEMINI = False  # <<<<< Mude para True se quiser usar o Gemini
+if USE_GEMINI:
+    modelo_IA = "Gemini free tier"
+else:
+    modelo_IA = "gpt-4o"
 
 # Pega chaves do Streamlit Secrets
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
@@ -230,6 +234,8 @@ st.checkbox("Sua história é um questionário?", value=False, key="is_questiona
 
 if "json_to_send" not in st.session_state:
     st.session_state["json_to_send"] = {}
+
+st.subheader(f"Esse site usa o modelo: {modelo_IA}")
 
 st.subheader("História Clínica")
 historia = st.text_area(
