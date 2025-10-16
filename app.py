@@ -5,6 +5,8 @@ import time
 import os
 from openai import OpenAI
 
+#First commit on develop
+
 # ---------------- CONFIGURAÇÕES ---------------- #
 USE_GEMINI = True  # <<<<< Mude para True se quiser usar o Gemini
 if USE_GEMINI:
