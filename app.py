@@ -121,6 +121,7 @@ Instruções:
 6. Se encontrar a sigla PO, ela quer dizer Pós Operatório, o nome ao lado deve ser listado em cirurgias.
 7. Corrija letras maiúsculas e formate corretamente.
 8. Responda apenas com o JSON.
+9. Não remova nenhuma parte do texto, 
 Texto do paciente:  
 {historia}  
 JSON base:  
