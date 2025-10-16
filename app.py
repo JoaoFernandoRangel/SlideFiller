@@ -19,8 +19,14 @@ RESERVE_API_KEY = st.secrets["RESERVE_API_KEY"]
 GOOGLE_URL = st.secrets["GOOGLE_URL"]
 FOLDER_URL = st.secrets["FOLDER_URL"]
 
+# OPENAI_API_KEY = ""
+# MAIN_API_KEY = ""
+# RESERVE_API_KEY = ""
+# GOOGLE_URL = ""
+# FOLDER_URL = ""
+
 # Cria cliente OpenAI
-client = OpenAI(api_key=OPENAI_API_KEY)
+# client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Template base
 JSON_TEMPLATE = {
@@ -184,8 +190,94 @@ JSON base:
     return json_resp
 
 
+def processa_questionario_e_historia(historia):
+    tentativas = 3
+    prompt = f"""
+    Você é um extrator de informações médicas.  
+    Sua tarefa é preencher o JSON fornecido com base no texto do paciente. 
+    O texto é uma história que foi escrita por um colega médico acompanhado de um questionário preenchido pelo paciente.
+
+    Instruções:  
+    1. Se a informação não estiver no texto → deixe vazio.  
+    2. Não faça suposições nem remova informações.  
+    3. Peso em quilogramas, altura em metros. Retorne somente os números, eles serão usados para cálculos, não adicione as unidades.  
+    4. Pode inferir sexo pelo nome.  
+    5. Em "antecedentes pessoais", campos não citados → preencher com "Nega".
+    6. Se encontrar a sigla PO, ela quer dizer Pós Operatório, o nome ao lado deve ser listado em cirurgias.
+    7. Corrija letras maiúsculas e formate corretamente.
+    8. Responda apenas com o JSON.
+    9. Não remova nenhuma parte do texto, 
+    Texto do paciente:  
+    {historia}  
+    JSON base:  
+    {json.dumps(JSON_TEMPLATE, indent=2, ensure_ascii=False)}  
+    """
+    if USE_GEMINI:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={RESERVE_API_KEY}"
+        headers = {"Content-Type": "application/json"}
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+
+        for tentativa in range(1, tentativas + 1):
+            response = requests.post(url, headers=headers, data=json.dumps(payload))
+            data = response.json()
+
+            if "error" in data:
+                if data["error"].get("code") == 503:
+                    st.warning(
+                        f"⚠️ Gemini sobrecarregado. Tentando novamente ({tentativa}/{tentativas})..."
+                    )
+                    time.sleep(3)
+                    continue
+                else:
+                    st.error("❌ Erro na API Gemini (extração de JSON)")
+                    st.json(data)
+                    return {}
+
+            try:
+                resposta = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                resposta = resposta.replace("```json", "").replace("```", "").strip()
+                json_resp = json.loads(resposta)
+                break
+            except Exception:
+                st.error("⚠️ Erro ao parsear JSON retornado pelo Gemini.")
+                st.json(data)
+                return {}
+    else:
+        for tentativa in range(1, tentativas + 1):
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "Você é um assistente útil e preciso.",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    max_tokens=1000,
+                )
+
+                resposta = response.choices[0].message.content.strip()
+                resposta = resposta.replace("```json", "").replace("```", "").strip()
+                return json.loads(resposta)
+
+            except json.JSONDecodeError:
+                st.warning(
+                    f"⚠️ Erro ao parsear JSON. Tentativa {tentativa}/{tentativas}..."
+                )
+                time.sleep(2)
+            except Exception as e:
+                st.error(f"❌ Erro na API OpenAI: {e}")
+                time.sleep(2)
+
+        st.error("🚨 Não foi possível obter resposta da OpenAI após várias tentativas.")
+        return {}
+
+
 # Função unificada
-def processar_texto(historia, questionario):
+def processar_texto(historia, questionario, isMixed):
+    if isMixed:
+        return processa_questionario_e_historia(historia)
     if USE_GEMINI:
         st.info("🧠 Usando modelo: **Gemini**")
         return chamar_gemini(historia, questionario)
@@ -214,8 +306,10 @@ if st.button("Gerar Slide", key="btn_gerar_slide"):
     else:
         with st.spinner("🔎 Processando dados e gerando slide..."):
             try:
-                resultado = processar_texto(
-                    st.session_state["historia"], st.session_state["is_questionario"]
+                resultado = processar_texto( 
+                    st.session_state["historia"],
+                    st.session_state["is_questionario"],
+                    st.session_state["is_mixed"],
                 )
                 if not resultado:
                     st.error("Não foi possível obter dados estruturados.")
@@ -232,6 +326,11 @@ if st.button("Gerar Slide", key="btn_gerar_slide"):
             except Exception as e:
                 st.error(f"Erro durante o processamento/envio: {e}")
 st.checkbox("Sua história é um questionário?", value=False, key="is_questionario")
+st.checkbox(
+    "Sua história é uma mistura de questionário e história normal?",
+    value=False,
+    key="is_mixed",
+)
 
 if "json_to_send" not in st.session_state:
     st.session_state["json_to_send"] = {}
