@@ -5,8 +5,10 @@ import time
 import os
 from openai import OpenAI
 
+#First commit on develop
+
 # ---------------- CONFIGURAÇÕES ---------------- #
-USE_GEMINI = True  # <<<<< Mude para True se quiser usar o Gemini
+USE_GEMINI = False  # <<<<< Mude para True se quiser usar o Gemini
 if USE_GEMINI:
     modelo_IA = "Gemini free tier"
 else:
