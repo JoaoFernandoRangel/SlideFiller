@@ -301,6 +301,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.header("🚨 ATENÇÃO 🚨")
+st.header("Vou desativar esse site e apagar a pasta do drive no dia 01/01/2026.")
+st.header("Recomendo fazer o backup de quaisquer arquivos que achar importante, talvez até mesmo baixar a pasta inteira.")
+st.header("Qualquer dúvida, entrar em contato por email.")
+st.header("🚨 ATENÇÃO 🚨")
 st.header(f"Slides no Google Drive: [Abrir pasta]({FOLDER_URL})")
 if st.button("Gerar Slide", key="btn_gerar_slide"):
     if not st.session_state.get("historia", "").strip():
