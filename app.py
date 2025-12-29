@@ -15,17 +15,17 @@ else:
     modelo_IA = "gpt-4o"
 
 # Pega chaves do Streamlit Secrets
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-MAIN_API_KEY = st.secrets["MAIN_API_KEY"]
-RESERVE_API_KEY = st.secrets["RESERVE_API_KEY"]
-GOOGLE_URL = st.secrets["GOOGLE_URL"]
-FOLDER_URL = st.secrets["FOLDER_URL"]
+# OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+# MAIN_API_KEY = st.secrets["MAIN_API_KEY"]
+# RESERVE_API_KEY = st.secrets["RESERVE_API_KEY"]
+# GOOGLE_URL = st.secrets["GOOGLE_URL"]
+# FOLDER_URL = st.secrets["FOLDER_URL"]
 
-# OPENAI_API_KEY = ""
-# MAIN_API_KEY = ""
-# RESERVE_API_KEY = ""
-# GOOGLE_URL = ""
-# FOLDER_URL = ""
+OPENAI_API_KEY = ""
+MAIN_API_KEY = ""
+RESERVE_API_KEY = ""
+GOOGLE_URL = ""
+FOLDER_URL = ""
 
 # Cria cliente OpenAI
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -300,11 +300,16 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+st.header("🚨 ATENÇÃO 🚨")
+st.header("Vou desativar esse site e apagar a pasta do drive no dia 01/01/2026.")
+st.header("Recomendo fazer o backup de quaisquer arquivos que achar importante, talvez até mesmo baixar a pasta inteira.")
+st.header("🚨 ATENÇÃO 🚨")
+
 
 st.header(f"Slides no Google Drive: [Abrir pasta]({FOLDER_URL})")
 if st.button("Gerar Slide", key="btn_gerar_slide"):
     if not st.session_state.get("historia", "").strip():
-        st.warning("Cole a história antes de gerar os slides.")
+        st.warning("Cole a história antes de gerar os slidef.")
     else:
         with st.spinner("🔎 Processando dados e gerando slide..."):
             try:
