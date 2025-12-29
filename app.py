@@ -28,7 +28,7 @@ FOLDER_URL = st.secrets["FOLDER_URL"]
 # FOLDER_URL = ""
 
 # Cria cliente OpenAI
-# client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Template base
 JSON_TEMPLATE = {
